@@ -33,3 +33,13 @@ int checkFileValidity(std::string file_location) {
     std::cout << "This dataset contains " << num_attr << " attributes" << std::endl;
     return num_attr;
 }
+
+double **createDataset(std::string file_location, int num_attr) {
+    std::ifstream target_file;
+    target_file.open(file_location);
+
+
+
+    return nullptr;
+}
+
