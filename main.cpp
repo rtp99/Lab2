@@ -25,10 +25,11 @@ int checkFileValidity(std::string file_location) {
         return 1;
     }
 
-    std::string buffer;
     std::string tmp_str;
-
-
+    getline(target_file, tmp_str, '\n'); // first row is a header
+    getline(target_file, tmp_str, '\n');
+    int num_attr = std::count(tmp_str.begin(), tmp_str.end(), ',');
     target_file.close();
-    return 0;
+    std::cout << "This dataset contains " << num_attr << " attributes" << std::endl;
+    return num_attr;
 }
