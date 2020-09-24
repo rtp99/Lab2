@@ -34,12 +34,16 @@ int checkFileValidity(std::string file_location) {
     return num_attr;
 }
 
-double **createDataset(std::string file_location, int num_attr) {
+double **createDataset(std::string file_location, int num_attr, int num_rows) {
+    double ** data_set = new double *[num_attr];
     std::ifstream target_file;
     target_file.open(file_location);
 
+    for(int i = 0; i < num_attr + 1; i++) {
 
+    }
 
+    target_file.close();
     return nullptr;
 }
 
