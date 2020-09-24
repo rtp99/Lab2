@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 int checkFileValidity(std::string file_location); // checks if file is in appropriate format, returns number of attributes
 double** createDataset(std::string file_location, int num_attr); // creates the dataset from given information
