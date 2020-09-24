@@ -12,7 +12,7 @@ struct fileData {
     int _num_rows;
 };
 
-fileData getFileInfo(std::string file_location); // checks if file is in appropriate format, returns number of attributes
+fileData getFileInfo(std::string file_location); // checks if file is in appropriate format, returns number of attributes and number of lines
 std::vector<double*> createDataset(std::string file_location, int num_attr, int num_rows); // creates the dataset from given information
 
 void regression (std::vector<double*> data_set, int num_attr, int num_rows); // primary output is over text console, no real return

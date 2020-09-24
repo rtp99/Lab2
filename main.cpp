@@ -39,21 +39,7 @@ fileData getFileInfo(std::string file_location) {
         file_data._num_rows++;
     }
     target_file.close();
-    std::cout << "This dataset contains " << file_data._num_attr << " attributes and "  << file_data._num_rows<< std::endl;
+    std::cout << "This dataset contains " << file_data._num_attr << " attributes and "  << file_data._num_rows << " lines" << std::endl;
     return file_data;
 }
-
-std::vector<double*> createDataset(std::string file_location, int num_attr, int num_rows) {
-    std::vector<double*> data_set;
-    std::ifstream target_file;
-    target_file.open(file_location);
-
-    for(int i = 0; i < num_attr + 1; i++) {
-
-    }
-
-    target_file.close();
-    return data_set;
-}
-
 
