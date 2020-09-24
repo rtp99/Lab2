@@ -9,6 +9,7 @@ int main(int argc, char** argv) {
     if(num_attr == 0){
         return 0;
     }
+    createDataset(argv[1], num_attr);
 
     return 0;
 }
@@ -38,11 +39,28 @@ int getFileInfo(std::string file_location) {
     return num_attr;
 }
 
-std::vector<double *> createDataset(std::string file_location, int num_attr, int num_rows) {
+std::vector<double *> createDataset(std::string file_location, int num_attr) {
     std::vector<double *> data_set;
+    std::ifstream target_file;
+    target_file.open(file_location);
 
-
-
+    std::string buffer;
+    std::string tmp_str;
+    getline(target_file, tmp_str, '\n'); // first row is a header
+    while(target_file >> buffer) {
+        double* new_row = new double [num_attr]();
+        std::stringstream stream(buffer);
+        // iterate through stream to fetch all values
+        for(int i = 0; i < num_attr; i++) {
+            getline(stream, tmp_str, ',');
+            new_row[i] = atof(tmp_str.c_str());
+        }
+        // fetch actual result
+        getline(stream, tmp_str, '\n');
+        data_set.push_back(new_row);
+    }
+    std::cout << "read " << data_set.size() << " lines of data into dataset" << std::endl;
+    target_file.close();
     return data_set;
 }
 
