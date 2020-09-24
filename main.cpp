@@ -5,17 +5,19 @@ int main(int argc, char** argv) {
         std::cout << "Error: Invalid Argument Count" << std::endl;
         return 1;
     }
-    fileData file_data = getFileInfo(argv[1]);
+    int num_attr = getFileInfo(argv[1]);
+    if(num_attr == 0){
+        return 0;
+    }
+
     return 0;
 }
 
-fileData getFileInfo(std::string file_location) {
-    fileData file_data{};
+int getFileInfo(std::string file_location) {
     // Check if file is a csv
     if(file_location.substr(file_location.length() - 4, file_location.length()) != ".csv"){
         std::cout << "Error: File is not a .csv" << std::endl;
-        file_data._is_valid = false;
-        return file_data;
+        return 0;
     }
     // open file and test
     std::ifstream target_file;
@@ -24,22 +26,25 @@ fileData getFileInfo(std::string file_location) {
         std::cout << "File accepted, reading now" << std::endl ;
     } else {
         std::cout << "Error: invalid file" << std::endl;
-        file_data._is_valid = false;
-        return file_data;
+        return 0;
     }
-    file_data._is_valid = true;
 
-    std::string buffer;
+    //get info
     std::string tmp_str;
-    file_data._num_rows = 0;
     getline(target_file, tmp_str, '\n'); // first row is a header
-    file_data._num_attr = std::count(tmp_str.begin(), tmp_str.end(), ',');
-    while(target_file >> buffer) {
-        std::getline(target_file, tmp_str, '\n');
-        file_data._num_rows++;
-    }
+    int num_attr = std::count(tmp_str.begin(), tmp_str.end(), ',');
     target_file.close();
-    std::cout << "This dataset contains " << file_data._num_attr << " attributes and "  << file_data._num_rows << " lines" << std::endl;
-    return file_data;
+    std::cout << "This dataset contains " << num_attr << " attributes" << std::endl;
+    return num_attr;
 }
+
+std::vector<double *> createDataset(std::string file_location, int num_attr, int num_rows) {
+    std::vector<double *> data_set;
+
+
+
+    return data_set;
+}
+
+
 
