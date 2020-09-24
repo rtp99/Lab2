@@ -5,8 +5,13 @@
 #include <fstream>
 #include <sstream>
 
-int checkFileValidity(std::string file_location); // checks if file is in appropriate format, returns number of attributes
-int getRowCount(std::string file_location); // gets the number of rows in the given file;
+struct fileData {
+    bool _is_valid;
+    int _num_attr;
+    int _num_rows;
+};
+
+fileData getFileInfo(std::string file_location); // checks if file is in appropriate format, returns number of attributes
 double** createDataset(std::string file_location, int num_attr, int num_rows); // creates the dataset from given information
 
 void regression (double ** data_set, int num_attr, int num_rows); // primary output is over text console, no real return
