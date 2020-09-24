@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 }
 
 fileData getFileInfo(std::string file_location) {
-    fileData file_data;
+    fileData file_data{};
     // Check if file is a csv
     if(file_location.substr(file_location.length() - 4, file_location.length()) != ".csv"){
         std::cout << "Error: File is not a .csv" << std::endl;
@@ -29,39 +29,31 @@ fileData getFileInfo(std::string file_location) {
     }
     file_data._is_valid = true;
 
+    std::string buffer;
     std::string tmp_str;
+    file_data._num_rows = 0;
     getline(target_file, tmp_str, '\n'); // first row is a header
-    getline(target_file, tmp_str, '\n');
-    int num_attr = std::count(tmp_str.begin(), tmp_str.end(), ',');
+    file_data._num_attr = std::count(tmp_str.begin(), tmp_str.end(), ',');
+    while(target_file >> buffer) {
+        std::getline(target_file, tmp_str, '\n');
+        file_data._num_rows++;
+    }
     target_file.close();
-    std::cout << "This dataset contains " << num_attr << " attributes" << std::endl;
+    std::cout << "This dataset contains " << file_data._num_attr << " attributes and "  << file_data._num_rows<< std::endl;
     return file_data;
 }
 
-int getRowCount(std::string file_location) {
+std::vector<double*> createDataset(std::string file_location, int num_attr, int num_rows) {
+    std::vector<double*> data_set;
     std::ifstream target_file;
     target_file.open(file_location);
-    std::string buffer;
-    std::string tmp_str;
-    int count;
-    while(target_file >> buffer) {
-        std::getline(target_file, tmp_str, '\n');
-        count++;
+
+    for(int i = 0; i < num_attr + 1; i++) {
+
     }
-    return 0;
-}
 
-double **createDataset(std::string file_location, int num_attr, int num_rows) {
-        double ** data_set = new double *[num_attr];
-        std::ifstream target_file;
-        target_file.open(file_location);
-
-        for(int i = 0; i < num_attr + 1; i++) {
-
-        }
-
-        target_file.close();
-        return nullptr;
+    target_file.close();
+    return data_set;
 }
 
 
