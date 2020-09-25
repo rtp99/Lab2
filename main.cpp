@@ -64,5 +64,16 @@ std::vector<double *> createDataset(std::string file_location, int num_attr) {
     return data_set;
 }
 
+double RMSE(double *predicted, double *actual, int num_vals) {
+    double sum_of_error_squares = 0;
+    for(int i = 0; i < num_vals; i++) {
+        double error = predicted[i] - actual[i];
+        sum_of_error_squares += pow(error, 2);
+    }
+    double mean_of_error_squares = sum_of_error_squares / num_vals;
+    double rmse = sqrt(mean_of_error_squares);
+    return rmse;
+}
+
 
 

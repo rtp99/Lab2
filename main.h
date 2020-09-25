@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cmath>
 
 
 int getFileInfo(std::string file_location); // checks if file is in appropriate format, returns number of attributes
