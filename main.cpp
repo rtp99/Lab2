@@ -119,7 +119,7 @@ void regression(std::vector<double *> data_set, std::vector<double> actual_vals,
 
 std::vector<double *> gen_coefficients(int num_attr) {
     std::vector<double *> coefficients;
-    for(int i = 0; i < 100000 ; i ++) {
+    for(int i = 0; i < 100 ; i ++) {
         double* new_row = new double [num_attr]();
         for(int j = 0; j < num_attr; j++) {
             new_row[j] = 2 + (rand() / (double)RAND_MAX) * (-2);
