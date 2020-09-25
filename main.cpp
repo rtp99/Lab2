@@ -9,8 +9,10 @@ int main(int argc, char** argv) {
     if(num_attr == 0){
         return 0;
     }
-    createDataset(argv[1], num_attr);
+    std::vector<double> actual_vals;
+    createDataset(argv[1], num_attr, &actual_vals);
 
+    std::cout << "RMSE of actual values against themselves is " << RMSE(actual_vals, actual_vals);
     return 0;
 }
 
@@ -39,8 +41,9 @@ int getFileInfo(std::string file_location) {
     return num_attr;
 }
 
-std::vector<double *> createDataset(std::string file_location, int num_attr) {
+std::vector<double *> createDataset(std::string file_location, int num_attr, std::vector<double>* actual_vals_ptr) {
     std::vector<double *> data_set;
+    actual_vals_ptr = new std::vector<double>();
     std::ifstream target_file;
     target_file.open(file_location);
 
@@ -57,6 +60,7 @@ std::vector<double *> createDataset(std::string file_location, int num_attr) {
         }
         // fetch actual result
         getline(stream, tmp_str, '\n');
+        actual_vals_ptr->push_back(atof(tmp_str.c_str()));
         data_set.push_back(new_row);
     }
     std::cout << "read " << data_set.size() << " lines of data into dataset" << std::endl;
@@ -64,13 +68,13 @@ std::vector<double *> createDataset(std::string file_location, int num_attr) {
     return data_set;
 }
 
-double RMSE(double *predicted, double *actual, int num_vals) {
+const double RMSE(std::vector<double> predicted, std::vector<double> actual) {
     double sum_of_error_squares = 0;
-    for(int i = 0; i < num_vals; i++) {
+    for(int i = 0; i < predicted.size(); i++) {
         double error = predicted[i] - actual[i];
         sum_of_error_squares += pow(error, 2);
     }
-    double mean_of_error_squares = sum_of_error_squares / num_vals;
+    double mean_of_error_squares = sum_of_error_squares / predicted.size();
     double rmse = sqrt(mean_of_error_squares);
     return rmse;
 }
