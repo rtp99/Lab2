@@ -1,6 +1,7 @@
 #include "main.h"
 
 int main(int argc, char** argv) {
+    srand((unsigned) time(0));
     if(argc != 2) {
         std::cout << "Error: Invalid Argument Count" << std::endl;
         return 1;
@@ -10,9 +11,8 @@ int main(int argc, char** argv) {
         return 0;
     }
     std::vector<double> actual_vals;
-    createDataset(argv[1], num_attr, &actual_vals);
-
-    std::cout << "RMSE of actual values against themselves is " << RMSE(actual_vals, actual_vals);
+    std::vector<double*> data_set = createDataset(argv[1], num_attr, &actual_vals);
+    regression(data_set, actual_vals, num_attr);
     return 0;
 }
 
@@ -43,7 +43,6 @@ int getFileInfo(std::string file_location) {
 
 std::vector<double *> createDataset(std::string file_location, int num_attr, std::vector<double>* actual_vals_ptr) {
     std::vector<double *> data_set;
-    actual_vals_ptr = new std::vector<double>();
     std::ifstream target_file;
     target_file.open(file_location);
 
@@ -77,6 +76,57 @@ const double RMSE(std::vector<double> predicted, std::vector<double> actual) {
     double mean_of_error_squares = sum_of_error_squares / predicted.size();
     double rmse = sqrt(mean_of_error_squares);
     return rmse;
+}
+
+void regression(std::vector<double *> data_set, std::vector<double> actual_vals, int num_attr) {
+    // generate coefficient sets (array of 14 values from 0 to 1)
+    std::vector<double *> coefficients = gen_coefficients(num_attr);
+    // iterate through all the data with each coefficient set
+    double best_rsme = DBL_MAX;
+    double* best_co = nullptr;
+    std::vector<double> best_predicted_vals;
+    for(double* curr_co : coefficients) {
+        std::vector<double> curr_predicted_vals;
+        for(double* row : data_set) {
+            double row_total = 0;
+            for(int i = 0; i < num_attr; i++){
+                // multiply each attribute in the row by its corresponding coefficient
+                row_total += row[i] * curr_co[i];
+            }
+            // add them all together to get the predicted result, store in vector of predicted_vals
+            curr_predicted_vals.push_back(row_total);
+        }
+            // calculate RMSE for current prediction set
+        double curr_rmse = RMSE(curr_predicted_vals, actual_vals);
+            // compare to previous highest RMSE
+        if(curr_rmse < best_rsme) {
+            // if smaller, set highest RMSE and save coefficients and predictions
+            best_rsme = curr_rmse;
+            best_co = curr_co;
+            best_predicted_vals = curr_predicted_vals;
+        }
+            // if larger, trash the values
+    }
+    // print final coefficient set and its RMSE
+
+    std::cout << "Final coefficient set is: " << std::endl;
+    for(int i = 0; i < num_attr; i++) {
+        std::cout << best_co[i] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "Which produced an RMSE of: " << best_rsme << std::endl;
+}
+
+std::vector<double *> gen_coefficients(int num_attr) {
+    std::vector<double *> coefficients;
+    for(int i = 0; i < 100000 ; i ++) {
+        double* new_row = new double [num_attr]();
+        for(int j = 0; j < num_attr; j++) {
+            new_row[j] = 2 + (rand() / (double)RAND_MAX) * (-2);
+        }
+        coefficients.push_back(new_row);
+    }
+    return coefficients;
 }
 
 
